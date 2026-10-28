@@ -1,0 +1,35 @@
+import assert from 'node:assert/strict';
+import {initialTournament} from '../lib/core.ts';
+import {readFileSync} from 'node:fs';
+const origin='http://127.0.0.1:5173';
+const pin=process.env.PONTADA_TEST_PIN||readFileSync(new URL('../.dev.vars',import.meta.url),'utf8').match(/^PONTADA_MANAGER_PIN=[\"']?(\d{4})/m)?.[1];assert(pin,'Local test PIN is required');
+const login=await fetch(origin+'/api/auth/pin',{method:'POST',headers:{'Content-Type':'application/json','X-Pontada-Client':'1'},body:JSON.stringify({pin})});assert.equal(login.status,200);
+const cookie=login.headers.getSetCookie().map(s=>s.split(';')[0]).join('; ');assert(cookie);
+const get=async(path='/api/tournament?manage=1',auth=true)=>{const r=await fetch(origin+path,{headers:auth?{Cookie:cookie}:{}});return {status:r.status,data:await r.json()};};
+const post=async(command,expectedRevision,operationId=crypto.randomUUID(),auth=true,csrf=true,extra={})=>{const r=await fetch(origin+'/api/tournament',{method:'POST',headers:{...(auth?{Cookie:cookie}:{}),'Content-Type':'application/json',...(csrf?{'X-Pontada-Client':'1'}:{}),...extra},body:JSON.stringify({command,expectedRevision,operationId})});return {status:r.status,data:await r.json()};};
+const saved=await get('/api/tournament?export=1');assert.equal(saved.status,200);let checks=0;
+try{
+ const publicBefore=await get('/api/tournament',false);assert.equal(publicBefore.status,200);assert.equal(publicBefore.data.tournament.audit.length,0);checks++;
+ assert.equal((await get('/api/tournament?export=1',false)).status,401);assert.equal((await get('/api/tournament?manage=1',false)).status,401);checks++;
+ assert.equal((await post({type:'GENERATE'},saved.data.revision,crypto.randomUUID(),false)).status,401);checks++;
+ assert.equal((await post({type:'GENERATE'},saved.data.revision,crypto.randomUUID(),false,true,{'oai-authenticated-user-id':'local_seedy','oai-authenticated-user-email':'seedy@sites.test'})).status,401);checks++;
+ assert.equal((await post({type:'GENERATE'},saved.data.revision,crypto.randomUUID(),true,false)).status,403);checks++;
+ let result=await post({type:'IMPORT',data:initialTournament()},saved.data.revision);assert.equal(result.status,200);let state=result.data;
+ result=await post({type:'SETUP',name:'Pontada QA',courts:2,mode:'TOTAL_POINTS',target:21,winBy:1},state.revision);assert.equal(result.status,200);state=result.data;assert.equal(state.tournament.matches.length,95);checks++;
+ const match=state.tournament.matches[0];result=await post({type:'START',matchId:match.id},state.revision);assert.equal(result.status,200);state=result.data;
+ const id=crypto.randomUUID(),command={type:'SCORE',matchId:match.id,team:'A',delta:1};
+ const once=await post(command,state.revision,id);assert.equal(once.status,200);assert.equal(once.data.tournament.matches[0].scoreA,1);checks++;
+ const twice=await post(command,state.revision,id);assert.equal(twice.status,200);assert.equal(twice.data.deduplicated,true);assert.equal(twice.data.revision,once.data.revision);checks++;
+ assert.equal((await post({...command,delta:-1},once.data.revision,id)).status,409);checks++;
+ const racing=await Promise.all([post({...command,team:'A'},once.data.revision),post({...command,team:'B'},once.data.revision)]);assert.deepEqual(racing.map(r=>r.status).sort(),[200,409]);checks++;
+ state=(await get()).data;const publicState=await get('/api/tournament',false);assert.equal(publicState.data.revision,state.revision);assert.equal(publicState.data.tournament.matches[0].scoreA+publicState.data.tournament.matches[0].scoreB,2);assert.equal(publicState.data.tournament.audit.length,0);assert(publicState.data.tournament.matches.every(m=>m.events.length===0));checks++;
+ result=await post({type:'UNDO',matchId:match.id},state.revision);assert.equal(result.status,200);state=result.data;assert.equal(state.tournament.matches[0].scoreA+state.tournament.matches[0].scoreB,1);checks++;
+ assert.equal((await post({type:'FINALIZE',matchId:match.id},state.revision)).status,400);assert.equal((await get()).data.revision,state.revision);checks++;
+ result=await post({type:'SET_SCORE',matchId:match.id,scoreA:13,scoreB:8},state.revision);assert.equal(result.status,200);state=result.data;
+ result=await post({type:'FINALIZE',matchId:match.id},state.revision);assert.equal(result.status,200);state=result.data;assert.equal(state.tournament.matches[0].status,'COMPLETED');checks++;
+ assert.equal((await post({type:'FINALIZE',matchId:match.id},state.revision)).status,400);checks++;
+ assert.equal((await post({type:'REOPEN',matchId:match.id,reason:''},state.revision)).status,400);checks++;
+ result=await post({type:'REOPEN',matchId:match.id,reason:'Uji koreksi'},state.revision);assert.equal(result.status,200);state=result.data;assert.equal(state.tournament.matches[0].status,'IN_PROGRESS');checks++;
+ assert.equal((await get('/api/tournament?export=1')).data.tournament.matches[0].events.length,2);checks++;
+ console.log(JSON.stringify({checks,passed:true,coverage:['public shared reads','private operator history','anonymous write denial','spoof denial','CSRF','atomic setup','persistence','deduplication','fingerprint','concurrent writes','public synchronization','undo','finalize validation','finalize once','reopen reason','reopen','full backup history']}));
+}finally{const current=await get();assert.equal((await post({type:'IMPORT',data:saved.data.tournament},current.data.revision)).status,200);}
