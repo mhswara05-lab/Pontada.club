@@ -15,7 +15,7 @@ try{
  assert.equal((await post({type:'GENERATE'},saved.data.revision,crypto.randomUUID(),false,true,{'oai-authenticated-user-id':'local_seedy','oai-authenticated-user-email':'seedy@sites.test'})).status,401);checks++;
  assert.equal((await post({type:'GENERATE'},saved.data.revision,crypto.randomUUID(),true,false)).status,403);checks++;
  let result=await post({type:'IMPORT',data:initialTournament()},saved.data.revision);assert.equal(result.status,200);let state=result.data;
- result=await post({type:'SETUP',name:'Pontada QA',courts:2,mode:'TOTAL_POINTS',target:21,winBy:1},state.revision);assert.equal(result.status,200);state=result.data;assert.equal(state.tournament.matches.length,95);checks++;
+ result=await post({type:'SETUP',name:'Salonsa QA',courts:2,mode:'TOTAL_POINTS',target:21,winBy:1},state.revision);assert.equal(result.status,200);state=result.data;assert.equal(state.tournament.matches.length,95);checks++;
  const match=state.tournament.matches[0];result=await post({type:'START',matchId:match.id},state.revision);assert.equal(result.status,200);state=result.data;
  const id=crypto.randomUUID(),command={type:'SCORE',matchId:match.id,team:'A',delta:1};
  const once=await post(command,state.revision,id);assert.equal(once.status,200);assert.equal(once.data.tournament.matches[0].scoreA,1);checks++;

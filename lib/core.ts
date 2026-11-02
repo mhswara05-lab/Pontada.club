@@ -14,7 +14,7 @@ function fail(message:string):never {throw new DomainError(message);}
 const key = (a: string,b: string) => [a,b].sort().join('|');
 const names = ['Ahmad','Arif','Bayu','Darwis','Dian','Eki','Erwin','Hidayat Patriquin','Hirfan','Ibas','Khairullah','Komang','Markel','Miyoe','Pundri','Rako','Tjokke','Verdi','Wanni','Yuyun'];
 export function initialTournament(): Tournament {
-  return {schemaVersion:1,name:'Pontada Pickleball Tournament',courts:2,rules:{mode:'TOTAL_POINTS',target:21,winBy:1},players:names.map((name,i)=>({id:`P${String(i+1).padStart(3,'0')}`,name,active:true})),matches:[],audit:[],archives:[],createdAt:new Date().toISOString()};
+  return {schemaVersion:1,name:'Salonsa Pickleball Tournament',courts:2,rules:{mode:'TOTAL_POINTS',target:21,winBy:1},players:names.map((name,i)=>({id:`P${String(i+1).padStart(3,'0')}`,name,active:true})),matches:[],audit:[],archives:[],createdAt:new Date().toISOString()};
 }
 function integer(value: unknown,min: number,max: number,label: string): number { if(typeof value!=='number'||!Number.isInteger(value)||value<min||value>max) fail(`${label} harus bilangan bulat ${min}–${max}.`);return value as number; }
 function cleanName(value: unknown): string {if(typeof value!=='string'||!value.trim()||value.trim().length>80) fail('Nama harus berisi 1–80 karakter.');return (value as string).trim();}
@@ -129,7 +129,7 @@ export function applyCommand(original:Tournament,c:Command,actor:string):Tournam
 }
 export function validateImport(input:unknown):Tournament{
   if(!input||typeof input!=='object')fail('Format cadangan tidak valid.');const t=input as Tournament;
-  if(t.schemaVersion!==1||!Array.isArray(t.players)||!Array.isArray(t.matches)||!t.rules)fail('Cadangan Pontada versi 1 diperlukan.');
+  if(t.schemaVersion!==1||!Array.isArray(t.players)||!Array.isArray(t.matches)||!t.rules)fail('Cadangan Salonsa versi 1 diperlukan.');
   t.name=cleanName(t.name);integer(t.courts,1,8,'Lapangan');integer(t.rules.target,5,99,'Target');integer(t.rules.winBy,1,2,'Selisih');
   if(!['TOTAL_POINTS','FIRST_TO_TARGET'].includes(t.rules.mode))fail('Aturan skor tidak valid.');if(t.rules.mode==='TOTAL_POINTS'&&t.rules.target%2===0)fail('Target total poin harus ganjil.');
   if(t.players.length>40||t.matches.length>300)fail('Ukuran cadangan melebihi batas.');const ids=new Set<string>();

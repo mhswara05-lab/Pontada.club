@@ -1,4 +1,4 @@
-# Pontada Modern — Sistem Desain Tetap v1.0.1
+# Salonsa Modern — Sistem Desain Tetap v1.0.1
 
 Status: acuan desain dikunci sesuai permintaan pengguna, 28 Oktober 2026. Paket ini menetapkan desain untuk implementasi berikutnya; web produksi belum diubah oleh pekerjaan ini.
 
@@ -8,7 +8,7 @@ Gunakan `assets/acuan-tampilan-modern.png` untuk arah visual dan `tokens.json` u
 
 ## Logo resmi
 
-Master tunggal: `assets/pontada-logo-master.png` — simbol P hijau dengan bola pickleball lime, disertai tulisan `pontada.` dan subjudul `PICKLEBALL CLUB` di bawahnya. Berkas ini berlatarkan transparan.
+Master tunggal: `public/brand/salonsa-logo-master.png` — simbol S hijau dengan bola pickleball lime, disertai tulisan `salonsa.` dan subjudul `PICKLEBALL CLUB` di bawahnya. Berkas ini berlatarkan transparan.
 
 - Pakai berkas master yang sama pada seluruh halaman, perangkat, dan rancangan selanjutnya.
 - Jangan menggambar atau membuat ulang logo dengan AI, mengetik ulang wordmark, mengubah warna, menghilangkan titik, menambah ikon lain, atau mengganti dengan emoji.

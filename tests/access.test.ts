@@ -43,8 +43,8 @@ test('public snapshots remove operator identities and undo history',()=>{
 });
 test('setup applies settings and complete schedule atomically',()=>{
   const original=initialTournament();
-  const next=applyCommand(original,{type:'SETUP',name:'Pontada Americano',courts:2,mode:'TOTAL_POINTS',target:21,winBy:1},'Penguji');
-  assert.equal(next.name,'Pontada Americano');assert.equal(next.matches.length,95);assert.equal(original.matches.length,0);
+  const next=applyCommand(original,{type:'SETUP',name:'Salonsa Americano',courts:2,mode:'TOTAL_POINTS',target:21,winBy:1},'Penguji');
+  assert.equal(next.name,'Salonsa Americano');assert.equal(next.matches.length,95);assert.equal(original.matches.length,0);
   assert.throws(()=>applyCommand(original,{type:'SETUP',name:'Bad',courts:2,mode:'TOTAL_POINTS',target:20,winBy:1},'Penguji'));
-  assert.equal(original.name,'Pontada Pickleball Tournament');
+  assert.equal(original.name,'Salonsa Pickleball Tournament');
 });

@@ -4,7 +4,7 @@ import { ArrowLeft, ClipboardList } from 'lucide-react';
 import type { Match } from '../lib/core';
 
 export function BrandLogo() {
-  return <img className="brand-logo" src="/brand/pontada-logo-master.png" alt="pontada. Pickleball Club" width="2048" height="683" />;
+  return <img className="brand-logo" src="/brand/salonsa-logo-master.png" alt="salonsa. Pickleball Club" width="2048" height="683" />;
 }
 export function StatusBadge({status}:{status:Match['status']}) {
   return <span className={`badge ${status.toLowerCase()}`}><i aria-hidden="true"/>{status==='IN_PROGRESS'?'Sedang bermain':status==='COMPLETED'?'Disahkan':'Menunggu giliran'}</span>;

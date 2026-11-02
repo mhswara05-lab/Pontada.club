@@ -1,6 +1,6 @@
-# Pontada Pickleball Club
+# Salonsa Pickleball Club
 
-Public tournament web app, with the locked Pontada Modern v1.0.1 identity. Adapted domain engines retain their MIT license; see THIRD_PARTY_NOTICES.md.
+Public tournament web app, with the locked Salonsa Modern v1.0.1 identity. Adapted domain engines retain their MIT license; see THIRD_PARTY_NOTICES.md.
 
 ## Access
 
@@ -32,7 +32,7 @@ Up to ten archives, 300 recent audit entries and 120 undo events per match are r
 
 ## Design
 
-The master logo is public/brand/pontada-logo-master.png (including PICKLEBALL CLUB). Do not redraw it. Manrope is bundled locally under public/fonts with its OFL license. Tokens and design rules are in design-system; app/globals.css implements the fixed colors, 18px minimum supporting text and 56px minimum button targets. app/ui.tsx centralizes logo, badges, dialogs and empty states.
+The master logo is public/brand/salonsa-logo-master.png (including PICKLEBALL CLUB). Do not redraw it. Manrope is bundled locally under public/fonts with its OFL license. Tokens and design rules are in design-system; app/globals.css implements the fixed colors, 18px minimum supporting text and 56px minimum button targets. app/ui.tsx centralizes logo, badges, dialogs and empty states.
 
 ## Verification
 
@@ -46,3 +46,7 @@ node tests/api.integration.mjs
 ```
 
 The authentication test checks PIN rejection, session cookies, anonymous access, logout revocation, CSRF and rate limits. The API test checks public visibility, manager access, spoofed identity rejection, CSRF, setup, scoring, operation deduplication, concurrent writes, undo, finalization, reopening and backup history; it restores the prior local data. Never point it at production.
+
+## Brand rename compatibility
+
+Salonsa is the current public brand. Existing PONTADA_* environment keys, API client headers, session cookies and browser storage keys are retained for compatibility, so the same club record, PIN sessions and queued scores remain available. Legacy tournament and archive names display as Salonsa without rewriting historical data. The GitHub repository and existing public URL remain unchanged.
