@@ -50,3 +50,7 @@ The authentication test checks PIN rejection, session cookies, anonymous access,
 ## Brand rename compatibility
 
 Salonsa is the current public brand. Existing PONTADA_* environment keys, API client headers, session cookies and browser storage keys are retained for compatibility, so the same club record, PIN sessions and queued scores remain available. Legacy tournament and archive names display as Salonsa without rewriting historical data. The GitHub repository and existing public URL remain unchanged.
+
+## Input previously recorded results
+
+The manager panel includes Input Hasil: paste one note such as `22 Bayu 13 - 8`, or select the batch (the schedule round) and player, enter their team score and the opposing score, then review both full pairings before confirmation. Player-relative scores are mapped to team A/B on the server. RECORD_RESULT validates the round, player and final-score rules, finalizes atomically through the existing revision/deduplication API, and rejects already finalized results. Corrections retain the existing reopen-with-reason flow. Historical entry never starts or modifies another live match.

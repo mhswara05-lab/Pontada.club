@@ -31,5 +31,10 @@ try{
  assert.equal((await post({type:'REOPEN',matchId:match.id,reason:''},state.revision)).status,400);checks++;
  result=await post({type:'REOPEN',matchId:match.id,reason:'Uji koreksi'},state.revision);assert.equal(result.status,200);state=result.data;assert.equal(state.tournament.matches[0].status,'IN_PROGRESS');checks++;
  assert.equal((await get('/api/tournament?export=1')).data.tournament.matches[0].events.length,2);checks++;
+ const recorded=state.tournament.matches.find(m=>m.status==='SCHEDULED');const entry={type:'RECORD_RESULT',matchId:recorded.id,round:recorded.round,playerId:recorded.b[0],scoreFor:13,scoreAgainst:8};
+ const entryId=crypto.randomUUID();result=await post(entry,state.revision,entryId);assert.equal(result.status,200);const entryRevision=state.revision;state=result.data;const actual=state.tournament.matches.find(m=>m.id===recorded.id);assert.equal(actual.status,'COMPLETED');assert.equal(actual.scoreA,8);assert.equal(actual.scoreB,13);checks++;
+ const repeated=await post(entry,entryRevision,entryId);assert.equal(repeated.status,200);assert.equal(repeated.data.deduplicated,true);assert.equal(repeated.data.revision,state.revision);checks++;
+ assert.equal((await post(entry,state.revision)).status,400);assert.equal((await get()).data.revision,state.revision);checks++;
+ const publicRecorded=await get('/api/tournament',false);assert.equal(publicRecorded.data.tournament.matches.find(m=>m.id===recorded.id).scoreB,13);checks++;
  console.log(JSON.stringify({checks,passed:true,coverage:['public shared reads','private operator history','anonymous write denial','spoof denial','CSRF','atomic setup','persistence','deduplication','fingerprint','concurrent writes','public synchronization','undo','finalize validation','finalize once','reopen reason','reopen','full backup history']}));
 }finally{const current=await get();assert.equal((await post({type:'IMPORT',data:saved.data.tournament},current.data.revision)).status,200);}

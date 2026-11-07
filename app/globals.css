@@ -424,3 +424,13 @@
 .pin-login-card .button{margin-top:12px;font-size:20px}
 .pin-login-error{font-size:18px;color:var(--pontada-danger)}
 @media(max-width:359px){.pin-login-card{padding:20px}.pin-login-card h1{font-size:30px}.pin-login-page>header{margin-bottom:32px}}
+
+/* Direct entry for results already recorded outside the app. */
+.result-entry-callout{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:24px;margin-top:24px;border:1px solid var(--pontada-border);border-radius:20px;background:var(--pontada-accent)}
+.result-entry-callout h2{font-size:24px;margin:0}.result-entry-callout p{font-size:18px;margin:6px 0 0}.result-entry-callout .button{flex-shrink:0}
+.result-entry>p{margin:0}.result-note{display:grid;gap:12px;padding:20px;border-radius:16px;background:var(--pontada-background);border:1px solid var(--pontada-border)}
+.result-entry label{display:flex;flex-direction:column;gap:8px;font-size:20px;font-weight:700;min-width:0}.result-entry input,.result-entry select{width:100%;min-width:0;min-height:56px;font-size:20px}.result-entry .support{font-weight:500}
+.result-entry .result-hint{margin:-8px 0 0}.result-match{padding:20px;border:1px solid var(--pontada-border);border-radius:16px;background:var(--pontada-background);overflow-wrap:anywhere}.result-match p{display:grid;gap:8px;margin-bottom:0}
+.result-score-fields{display:grid;grid-template-columns:1fr 1fr;gap:16px}.result-score-fields input{font-size:36px;min-height:72px;text-align:center;font-weight:800}
+.result-error{color:var(--pontada-danger);font-size:18px;line-height:1.5}.result-review-teams{display:grid;gap:12px}.result-review-teams section{display:grid;grid-template-columns:1fr auto;gap:8px 16px;padding:20px;border:1px solid var(--pontada-border);border-radius:16px}.result-review-teams section>span{grid-column:1/-1;font-size:18px}.result-review-teams h3{margin:0;font-size:22px;overflow-wrap:anywhere}.result-review-teams strong{font-size:44px;line-height:1}.result-review-teams section:first-child{background:var(--pontada-primary);color:white}
+@media(max-width:600px){.result-entry-callout{align-items:stretch;flex-direction:column;padding:20px}.result-entry-callout .button{width:100%}.result-note{padding:16px}.result-score-fields{gap:12px}}
