@@ -49,7 +49,7 @@ Satu keluarga huruf: **Manrope**, termasuk judul dan isi. Font lokal dan lisensi
 | Judul bagian | 26 px | 700 |
 | Angka skor desktop / HP | 88 / 80 px | 800 |
 
-Tidak ada tulisan antarmuka di bawah 18 px. Baris isi 1,5 kali ukuran huruf. Hindari teks huruf kapital panjang, teks tipis, dan keterangan abu-abu pucat. Konten tidak boleh terpotong pada pembesaran 200%; baris boleh turun agar tetap terbaca.
+Ukuran tabel di atas berlaku sebagai dasar desktop. Pada HP sampai lebar 719 px, gunakan isi dan tombol 16 px, keterangan serta navigasi 14 px, judul 28 px, nama pemain 17 px, poin klasemen 19 px, dan statistik 17 px. Pertahankan target sentuh 56 px dan dukungan pembesaran pengguna. Baris isi 1,5 kali ukuran huruf. Hindari teks huruf kapital panjang, teks tipis, dan keterangan abu-abu pucat. Konten tidak boleh terpotong pada pembesaran 200%; baris boleh turun agar tetap terbaca.
 
 ## Bentuk dan jarak
 

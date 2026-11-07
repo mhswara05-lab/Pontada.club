@@ -32,7 +32,7 @@ Up to ten archives, 300 recent audit entries and 120 undo events per match are r
 
 ## Design
 
-The master logo is public/brand/salonsa-logo-master.png (including PICKLEBALL CLUB). Do not redraw it. Manrope is bundled locally under public/fonts with its OFL license. Tokens and design rules are in design-system; app/globals.css implements the fixed colors, 18px minimum supporting text and 56px minimum button targets. app/ui.tsx centralizes logo, badges, dialogs and empty states.
+The master logo is public/brand/salonsa-logo-master.png (including PICKLEBALL CLUB). Do not redraw it. Manrope is bundled locally under public/fonts with its OFL license. Tokens and design rules are in design-system; app/globals.css implements the fixed colors, responsive type sizes (16px body and 14px supporting text on phones) and 56px minimum button targets. app/ui.tsx centralizes logo, badges, dialogs and empty states.
 
 ## Verification
 
