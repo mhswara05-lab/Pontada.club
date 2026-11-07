@@ -36,5 +36,9 @@ try{
  const repeated=await post(entry,entryRevision,entryId);assert.equal(repeated.status,200);assert.equal(repeated.data.deduplicated,true);assert.equal(repeated.data.revision,state.revision);checks++;
  assert.equal((await post(entry,state.revision)).status,400);assert.equal((await get()).data.revision,state.revision);checks++;
  const publicRecorded=await get('/api/tournament',false);assert.equal(publicRecorded.data.tournament.matches.find(m=>m.id===recorded.id).scoreB,13);checks++;
+ result=await post({type:'SAVE_SCORE',matchId:recorded.id,scoreA:7,scoreB:14},state.revision);assert.equal(result.status,200);state=result.data;assert.equal(state.tournament.matches.find(m=>m.id===recorded.id).scoreB,14);checks++;
+ const last=state.tournament.matches.at(-1);result=await post({type:'SAVE_SCORE',matchId:last.id,scoreA:3,scoreB:2},state.revision);assert.equal(result.status,200);state=result.data;assert.equal(state.tournament.matches.at(-1).scoreA,3);checks++;
+ const backup=await get('/api/tournament?export=1');result=await post({type:'IMPORT',data:backup.data.tournament},state.revision);assert.equal(result.status,200);state=result.data;checks++;
+ assert.equal((await post({type:'SAVE_SCORE',matchId:last.id,scoreA:25,scoreB:2},state.revision)).status,400);assert.equal((await get()).data.revision,state.revision);checks++;
  console.log(JSON.stringify({checks,passed:true,coverage:['public shared reads','private operator history','anonymous write denial','spoof denial','CSRF','atomic setup','persistence','deduplication','fingerprint','concurrent writes','public synchronization','undo','finalize validation','finalize once','reopen reason','reopen','full backup history']}));
 }finally{const current=await get();assert.equal((await post({type:'IMPORT',data:saved.data.tournament},current.data.revision)).status,200);}

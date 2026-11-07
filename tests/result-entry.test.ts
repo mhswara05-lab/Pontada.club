@@ -47,5 +47,5 @@ test('pembaca catatan mencocokkan nama dan batch, mendukung tanda pisah WA, meno
  assert.throws(()=>parseResultNote('catatan tidak lengkap',t),/format/);
  const ambiguous=structuredClone(t);ambiguous.players[0].name='Pemain Mirip A';ambiguous.players[1].name='Pemain Mirip B';
  assert.throws(()=>parseResultNote('1 Pemain Mirip 13 - 8',ambiguous),/beberapa pemain/);
- assert.throws(()=>parseResultNote(note,run(t,command(t))),/sudah disahkan/);
+ assert.deepEqual(parseResultNote(note,run(t,command(t))),parseResultNote(note,t));
 });

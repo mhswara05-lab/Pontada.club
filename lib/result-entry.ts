@@ -13,6 +13,5 @@ export function parseResultNote(text:string,t:Pick<Tournament,'players'|'matches
   const playerId=players[0].id;
   const matches=t.matches.filter(m=>m.round===round&&[...m.a,...m.b].includes(playerId));
   if(matches.length!==1)throw new Error('Batch dan pemain tidak cocok dengan jadwal. Gunakan nomor Babak di aplikasi dan periksa kembali pemainnya.');
-  if(matches[0].status==='COMPLETED')throw new Error('Hasil pertandingan ini sudah disahkan. Buka Lihat Hasil untuk memeriksa atau mengoreksinya.');
   return {round,playerId,scoreFor:Number(parts[3]),scoreAgainst:Number(parts[4])};
 }

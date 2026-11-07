@@ -53,4 +53,8 @@ Salonsa is the current public brand. Existing PONTADA_* environment keys, API cl
 
 ## Input previously recorded results
 
-The manager panel includes Input Hasil: paste one note such as `22 Bayu 13 - 8`, or select the batch (the schedule round) and player, enter their team score and the opposing score, then review both full pairings before confirmation. Player-relative scores are mapped to team A/B on the server. RECORD_RESULT validates the round, player and final-score rules, finalizes atomically through the existing revision/deduplication API, and rejects already finalized results. Corrections retain the existing reopen-with-reason flow. Historical entry never starts or modifies another live match.
+The manager panel includes Input Hasil: paste one note such as `22 Bayu 13 - 8`, or select the batch (the schedule round) and player, enter their team score and the opposing score, then review both full pairings before confirmation. Player-relative scores are mapped to team A/B on the server. The note entry and schedule editor use SAVE_SCORE, which saves scores on any match regardless of previous state or playing order. Completed scores update the standings; valid partial scores remain stored without counting toward wins or losses. Every save records the previous and new score. Revision checks and operation deduplication remain enforced. Legacy RECORD_RESULT remains available for older clients.
+
+## Flexible schedule and full standings
+
+All scheduled matches are listed without status groups, start/reopen gates or pagination. Managers open any match to edit both scores and save directly. The standings show every player with played, won, lost and points; phones use labeled per-row stats for readability. A partial score is a saved record, not a live reservation, so backup imports permit overlapping partial records. Schedule pairing integrity and final-score validation remain enforced.
